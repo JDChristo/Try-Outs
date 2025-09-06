@@ -7,7 +7,6 @@ public class CardController : MonoBehaviour
     [Header("Setup")]
     [SerializeField] private Card m_cardPrefab;
     [SerializeField] private Grid m_grid;
-    [SerializeField] private Sprite[] m_sprites;
 
     [Header("Timings")]
     [SerializeField] private float m_hideAfter = 1.5f;
@@ -30,10 +29,17 @@ public class CardController : MonoBehaviour
     {
         List<int> spriteIndices = new List<int>();
 
-        for (int i = 0; i < m_sprites.Length; i++)
+        int rows = LevelManager.Instance.GetRow();
+        int cols = LevelManager.Instance.GetColumn();
+
+        int totalCards = (rows * cols) / 2;
+        var sprites = LevelManager.Instance.GetCardIcons();
+
+        for (int i = 0; i < totalCards; i++)
         {
-            spriteIndices.Add(i);
-            spriteIndices.Add(i);
+            int spriteIndex = i % sprites.Count;
+            spriteIndices.Add(spriteIndex);
+            spriteIndices.Add(spriteIndex);
         }
 
         return spriteIndices;
@@ -52,16 +58,19 @@ public class CardController : MonoBehaviour
 
     private void SpawnCards(List<int> spriteIndices)
     {
+        var sprites = LevelManager.Instance.GetCardIcons();
         for (int i = 0; i < spriteIndices.Count; i++)
         {
             int index = spriteIndices[i];
             Card card = Instantiate(m_cardPrefab, m_grid.transform);
-            card.Init(index, m_sprites[index], OnCardSelected);
+            card.Init(index, sprites[index], OnCardSelected);
             card.Show(null); // show front initially
             m_activeCards.Add(card);
         }
 
-        m_grid.PlaceInLayout(2, 2, m_activeCards);
+        int rows = LevelManager.Instance.GetRow();
+        int cols = LevelManager.Instance.GetColumn();
+        m_grid.PlaceInLayout(rows, cols, m_activeCards);
     }
 
     private IEnumerator HideAllCards()
