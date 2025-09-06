@@ -185,10 +185,10 @@ RectTransform:
   m_Father: {fileID: 8411390458331716765}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: -100, y: -100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8411390458026403131
 CanvasRenderer:
@@ -310,6 +310,7 @@ MonoBehaviour:
   m_iconImage: {fileID: 8411390458026403130}
   m_backFaceSprite: {fileID: 21300000, guid: d18128fabb1cf4e37b7b21577943479b, type: 3}
   m_frontFaceSprite: {fileID: 21300000, guid: d73d934c3326e484faf671afc00259b0, type: 3}
+  m_moveHeight: 30
   m_flipDuration: 0.2
   m_flipAnimationCurve:
     serializedVersion: 2

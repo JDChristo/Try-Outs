@@ -6,7 +6,7 @@ public class CardController : MonoBehaviour
 {
     [Header("Setup")]
     [SerializeField] private Card m_cardPrefab;
-    [SerializeField] private Transform m_grid;
+    [SerializeField] private Grid m_grid;
     [SerializeField] private Sprite[] m_sprites;
 
     [Header("Timings")]
@@ -55,11 +55,13 @@ public class CardController : MonoBehaviour
         for (int i = 0; i < spriteIndices.Count; i++)
         {
             int index = spriteIndices[i];
-            Card card = Instantiate(m_cardPrefab, m_grid);
+            Card card = Instantiate(m_cardPrefab, m_grid.transform);
             card.Init(index, m_sprites[index], OnCardSelected);
             card.Show(null); // show front initially
             m_activeCards.Add(card);
         }
+
+        m_grid.PlaceInLayout(2, 2, m_activeCards);
     }
 
     private IEnumerator HideAllCards()

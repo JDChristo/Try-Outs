@@ -62,4 +62,10 @@ public class Card : MonoBehaviour, IPointerClickHandler
             m_onCardClick?.Invoke(this);
         }
     }
+
+    public void SetAnchoredPosition(Vector2 size, Vector2 pos)
+    {
+        m_rect.sizeDelta = size;
+        m_rect.anchoredPosition = pos;
+    }
 }
