@@ -5,48 +5,61 @@ using UnityEngine.UI;
 
 public class Card : MonoBehaviour, IPointerClickHandler
 {
+    [Header("References")]
     [SerializeField] private RectTransform m_rect;
-    [SerializeField] private Image m_image;
-    [SerializeField] private Sprite m_backFaceSprite;
+    [SerializeField] private Image m_iconImage;
+    [SerializeField] private BaseCardAnimator m_animator;
 
-    private event Action<Card> m_onCardClick;
-
-    private Sprite m_iconSprite;
-
-    private bool m_isShown;
+    private Action<Card> m_onCardClick;
+    private bool m_isMatched;
+    private bool m_isFlipped;
     private int m_id;
 
     public int Id => m_id;
+    public bool IsMatched => m_isMatched;
+    public bool IsFlipped => m_isFlipped;
 
-    public void Init(int id, Sprite icon, Action<Card> m_onClick)
+    public void Init(int id, Sprite icon, Action<Card> onClick)
     {
         m_id = id;
-        m_iconSprite = icon;
-
-        m_onCardClick = m_onClick;
-        Show();
-        Invoke(nameof(Hide), 1f);
+        m_iconImage.sprite = icon;
+        m_onCardClick = onClick;
+        m_isMatched = false;
+        m_isFlipped = false;
     }
 
-    public void Show()
+    public void Matched()
     {
-        m_image.sprite = m_iconSprite;
-        m_isShown = true;
+        m_animator.Matched();
+        m_isMatched = true;
+    }
+
+    public void Show(Action onComplete)
+    {
+        if (m_isMatched) return;
+
+        m_animator.Show(onComplete);
+        m_isFlipped = true;
     }
 
     public void Hide()
     {
-        m_image.sprite = m_backFaceSprite;
-        m_isShown = false;
+        if (m_isMatched) return;
+
+        m_animator.Hide();
+        m_isFlipped = false;
     }
 
-    public bool IsCardActiveAndSelected()
+    public bool IsCardActive()
     {
-        return m_isShown;
+        return !m_isFlipped && !m_isMatched;
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        m_onCardClick?.Invoke(this);
+        if (IsCardActive())
+        {
+            m_onCardClick?.Invoke(this);
+        }
     }
 }
